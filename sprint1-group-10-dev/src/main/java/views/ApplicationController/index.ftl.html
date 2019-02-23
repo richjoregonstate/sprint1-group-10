@@ -1,0 +1,68 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> 
+<@layout.myLayout "Home page">    
+
+
+<h1 style="color: #ffffff;">The Battleship game</h1>
+
+<span class="stack">
+    <section>
+        <div class="text1"> 1 </div>
+        <div class="text2"> 2 </div>
+        <div class="text3"> 3 </div>
+        <div class="text4"> 4 </div>
+        <div class="text5"> 5 </div>
+        <div class="text6"> 6 </div>
+        <div class="text7"> 7 </div>
+        <div class="text8"> 8 </div>
+        <div class="text9"> 9 </div>
+        <div class="text10"> 10 </div>
+    </section>
+
+    <div class="table1">
+    <p class="gridBorder"> &nbsp;&nbsp; A &emsp; B &emsp; C &emsp; D &emsp; E &emsp; F &emsp; G &emsp; H &emsp; I &emsp; J</p>
+    <table id="opponent" class="battleGrid">
+    </table>
+    </div>
+
+
+    <textarea id="gamelog" class="logbox">
+    </textarea>
+
+</span>
+
+<span class="stack">
+    <section>
+        <div class="text1"> 1 </div>
+        <div class="text2"> 2 </div>
+        <div class="text3"> 3 </div>
+        <div class="text4"> 4 </div>
+        <div class="text5"> 5 </div>
+        <div class="text6"> 6 </div>
+        <div class="text7"> 7 </div>
+        <div class="text8"> 8 </div>
+        <div class="text9"> 9 </div>
+        <div class="text10"> 10 </div>
+    </section>
+    <div class="table2">
+    <p class="gridBorder"> &nbsp;&nbsp; A &emsp; B &emsp; C &emsp; D &emsp; E &emsp; F &emsp; G &emsp; H &emsp; I &emsp; J</p>
+    <table id="player" class="battleGrid">
+    </table>
+    </div>
+    <ul class="buttonList">
+        <li><button id="place_minesweeper">Place Minesweeper</button></li>
+        <li><button id="place_destroyer">Place Destroyer</button></li>
+        <li><button id="place_battleship">Place Battleship</button></li>
+        <li><input type="checkbox" id="is_vertical">Vertical</input></li>
+        <li><button id="Reset" class="resetButton">Reset</button></li>
+    </ul>
+</span>
+
+<script type="text/javascript" src="/assets/game.js"></script>
+<script>
+    document.getElementById("Reset").addEventListener("click", function(e) {
+        location.reload();
+    });
+    initGame();
+</script>
+
+</@layout.myLayout>
