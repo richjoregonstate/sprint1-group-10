@@ -88,10 +88,6 @@ public class Ship {
 		return result;
 	}
 
-	@JsonIgnore
-	public Square getCC(){
-		return occupiedSquares.get(0);
-	}
 
 	@JsonIgnore
 	public boolean isSunk() {
