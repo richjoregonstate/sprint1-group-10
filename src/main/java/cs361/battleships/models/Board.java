@@ -119,11 +119,6 @@ public class Board {
 		if(!useSonar){
 			var hitShip = shipsAtLocation.get(0);
 			var attackResult = hitShip.attack(s.getRow(), s.getColumn());
-			if(attackResult.getResult() != AtackStatus.SUNK && hitShip.getCC().getRow() == s.getRow() && hitShip.getCC().getColumn() == s.getColumn() && hitShip.getKind() == "MINESWEEPER"){
-				Square tmpS = hitShip.getOccupiedSquares().get(1);
-				attacks.add(attackResult);
-				attackResult = hitShip.attack(tmpS.getRow(),tmpS.getColumn());
-			}
 			if (attackResult.getResult() == AtackStatus.SUNK) {
 				if (ships.stream().allMatch(ship -> ship.isSunk())) {
 					attackResult.setResult(AtackStatus.SURRENDER);
