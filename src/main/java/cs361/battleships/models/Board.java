@@ -10,7 +10,7 @@ public class Board {
 
 	@JsonProperty private List<Ship> ships;
 	@JsonProperty private List<Result> attacks;
-	@JsonProperty private int numSonar;
+	@JsonProperty private int numSonar;//FIXME: Add a sonar result type that we count to see how may sonar we have made
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -31,7 +31,19 @@ public class Board {
 		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
 			return false;
 		}
-		final var placedShip = new Ship(ship.getKind());
+		final Ship placedShip;
+		if(ship.getKind().equals("MINESWEEPER")){
+			placedShip = new Minesweeper();
+		}
+		else if(ship.getKind().equals("BATTLESHIP")){
+			placedShip = new Battleship();
+		}
+		else if(ship.getKind().equals("DESTROYER")){
+			placedShip = new Destroyer();
+		}
+		else {
+			return false;
+		}
 		placedShip.place(y, x, isVertical);
 		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
 			return false;
@@ -106,19 +118,28 @@ public class Board {
 			}
 		}
 
-		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s))) {
-			var attackResult = new Result(s);
-			attackResult.setResult(AtackStatus.INVALID);
-			return attackResult;
-		}
 		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
 		if (shipsAtLocation.size() == 0) {
+			if (attacks.stream().anyMatch(r -> r.getLocation().equals(s))) {
+				var attackResult = new Result(s);
+				attackResult.setResult(AtackStatus.INVALID);
+				return attackResult;
+			}
 			var attackResult = new Result(s);
 			return attackResult;
 		}
 		if(!useSonar){
 			var hitShip = shipsAtLocation.get(0);
 			var attackResult = hitShip.attack(s.getRow(), s.getColumn());
+			if(hitShip.getCC().equals(s)){//If we've hit the cc
+				List<Result> tmpL = hitShip.sinkMe();
+				if(tmpL.size() != 0){
+					for(int i = 0; i < tmpL.size();i++){
+						attacks.add(tmpL.get(i));// Add attacks for all the other squares
+					}
+					attackResult = tmpL.get(tmpL.size()-1);//Grab the sunk result
+				}
+			}
 			if (attackResult.getResult() == AtackStatus.SUNK) {
 				if (ships.stream().allMatch(ship -> ship.isSunk())) {
 					attackResult.setResult(AtackStatus.SURRENDER);

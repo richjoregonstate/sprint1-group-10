@@ -12,9 +12,10 @@ import java.util.Set;
 
 public class Ship {
 
-	@JsonProperty private String kind;
-	@JsonProperty private List<Square> occupiedSquares;
-	@JsonProperty private int size;
+	@JsonProperty protected String kind;
+	@JsonProperty protected int size;
+	@JsonProperty protected List<Square> occupiedSquares;
+
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
@@ -34,6 +35,22 @@ public class Ship {
 				size = 4;
 				break;
 		}
+	}
+
+	public Square getCC(){
+		return occupiedSquares.get(0);
+	}
+
+	public List<Result> sinkMe(){// Return a list of hits on the ship
+		List<Result> HitMe = new ArrayList<>();
+		Result tmpR;
+		for (int i = 0; i < occupiedSquares.size();i++){
+			tmpR = this.attack(occupiedSquares.get(i).getRow(),occupiedSquares.get(i).getColumn());
+			if(tmpR.getResult() != AtackStatus.INVALID){
+				HitMe.add(tmpR);
+			}
+		}
+		return HitMe;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -82,12 +99,16 @@ public class Ship {
 		result.setShip(this);
 		if (isSunk()) {
 			result.setResult(AtackStatus.SUNK);
-		} else {
+		}
+		else {
 			result.setResult(AtackStatus.HIT);
 		}
 		return result;
 	}
 
+	public boolean getCChit(){
+		return false;
+	}
 
 	@JsonIgnore
 	public boolean isSunk() {
